@@ -1,0 +1,11 @@
+Иденти | Командная строка                                                                                                                             | Дата и время     | Действия       | Изменен
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+     9 | remove -y tcpdump                                                                                                                            | 2026-11-01 21:03 | Removed        |    1   
+     8 | install -y nginx libcap-ng-utils                                                                                                             | 2026-11-01 21:03 | Install        |    5   
+     7 | update -y                                                                                                                                    | 2026-11-01 20:51 | I, O, U        |  178 EE
+     6 | install fail2ban -y                                                                                                                          | 2026-09-14 02:25 | Install        |    4 EE
+     5 | upgrade -y                                                                                                                                   | 2026-09-14 02:00 | I, O, U        |  164 EE
+     4 | -y install netbird                                                                                                                           | 2026-09-14 01:36 | Install        |    1 E<
+     3 | autoremove -y --setopt=metadata_expire=-1                                                                                                    | 2026-09-14 01:09 | Removed        |    1 ><
+     2 | remove -y --setopt=metadata_expire=-1 virtualbox-guest-additions xorg-x11-drv-vbox VirtualBox-kmod open-vm-tools spice-vdagent               | 2026-09-14 01:08 | Removed        |    5 >E
+     1 |                                                                                                                                              | 2026-09-14 00:56 | Install        | 1764 EE

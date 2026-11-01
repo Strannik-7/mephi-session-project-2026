@@ -1,0 +1,567 @@
+Last login: Sun Nov  1 21:17:20 2026 from 172.16.0.111
+[vladblednov@mephi-2026 ~]$ nmcli -t -f NAME,DEVICE,TYPE,STATE connection show --active
+ens18:ens18:802-3-ethernet:activated
+lo:lo:loopback:activated
+wt0:wt0:wireguard:activated
+[vladblednov@mephi-2026 ~]$ nmcli -f ipv4.method connection show "ens18"
+ipv4.method:                            auto
+[vladblednov@mephi-2026 ~]$ ip -4 addr show ens18
+2: ens18: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    altname enp0s18
+    inet 10.25.50.45/24 brd 10.25.50.255 scope global dynamic noprefixroute ens18
+       valid_lft 23563sec preferred_lft 23563sec
+[vladblednov@mephi-2026 ~]$ hostnamectl | grep "Static hostname"
+ Static hostname: mephi-2026.domain.local
+[vladblednov@mephi-2026 ~]$ echo "я ранее применил sudo hostnamectl set-hostname mephi-2026.domain.local"
+я ранее применил sudo hostnamectl set-hostname mephi-2026.domain.local
+[vladblednov@mephi-2026 ~]$ hostname -f
+mephi-2026.domain.local
+[vladblednov@mephi-2026 ~]$ ping -c 4 8.8.8.8 > ~/ping.out
+[vladblednov@mephi-2026 ~]$ cat ~/ping.out
+PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.
+64 bytes from 8.8.8.8: icmp_seq=1 ttl=115 time=22.8 ms
+64 bytes from 8.8.8.8: icmp_seq=2 ttl=115 time=22.9 ms
+64 bytes from 8.8.8.8: icmp_seq=3 ttl=115 time=23.0 ms
+64 bytes from 8.8.8.8: icmp_seq=4 ttl=115 time=23.0 ms
+
+--- 8.8.8.8 ping statistics ---
+4 packets transmitted, 4 received, 0% packet loss, time 3004ms
+rtt min/avg/max/mdev = 22.847/22.955/23.040/0.076 ms
+[vladblednov@mephi-2026 ~]$ sudo dnf update -y
+Последняя проверка окончания срока действия метаданных: 1:18:06 назад, Вс 01 ноя 2026 20:21:43.
+Зависимости разрешены.
+Отсутствуют действия для выполнения.
+Выполнено!
+[vladblednov@mephi-2026 ~]$ sudo dnf install -y nginx libcap-ng-utils
+Последняя проверка окончания срока действия метаданных: 1:19:10 назад, Вс 01 ноя 2026 20:21:43.
+Пакет nginx-1:1.30.4-2.red80.x86_64 уже установлен.
+Пакет libcap-ng-utils-0.8.3-3.red80.x86_64 уже установлен.
+Зависимости разрешены.
+Отсутствуют действия для выполнения.
+Выполнено!
+[vladblednov@mephi-2026 ~]$ sudo dnf download --destdir=/tmp tcpdump
+Последняя проверка окончания срока действия метаданных: 1:26:02 назад, Вс 01 ноя 2026 20:21:43.
+(1/2): tcpdump-4.99.5-1.red80.x86_64.rpm                                                                                                                           3.0 MB/s | 523 kB     00:00
+(2/2): tcpdump-4.99.5-1.red80.i686.rpm                                                                                                                             2.9 MB/s | 530 kB     00:00
+[vladblednov@mephi-2026 ~]$ ls -l /tmp/tcpdump*.rpm
+-rw-r--r--. 1 root root 542686 ноя  1 21:47 /tmp/tcpdump-4.99.5-1.red80.i686.rpm
+-rw-r--r--. 1 root root 535524 ноя  1 21:47 /tmp/tcpdump-4.99.5-1.red80.x86_64.rpm
+[vladblednov@mephi-2026 ~]$ sudo rpm -ivh /tmp/tcpdump*.rpm
+ошибка: Неудовлетворенные зависимости:
+        libc.so.6 нужен для tcpdump-14:4.99.5-1.red80.i686
+        libc.so.6(GLIBC_2.0) нужен для tcpdump-14:4.99.5-1.red80.i686
+        libc.so.6(GLIBC_2.1) нужен для tcpdump-14:4.99.5-1.red80.i686
+        libc.so.6(GLIBC_2.1.3) нужен для tcpdump-14:4.99.5-1.red80.i686
+        libc.so.6(GLIBC_2.11) нужен для tcpdump-14:4.99.5-1.red80.i686
+        libc.so.6(GLIBC_2.3) нужен для tcpdump-14:4.99.5-1.red80.i686
+        libc.so.6(GLIBC_2.3.3) нужен для tcpdump-14:4.99.5-1.red80.i686
+        libc.so.6(GLIBC_2.3.4) нужен для tcpdump-14:4.99.5-1.red80.i686
+        libc.so.6(GLIBC_2.33) нужен для tcpdump-14:4.99.5-1.red80.i686
+        libc.so.6(GLIBC_2.34) нужен для tcpdump-14:4.99.5-1.red80.i686
+        libc.so.6(GLIBC_2.4) нужен для tcpdump-14:4.99.5-1.red80.i686
+        libc.so.6(GLIBC_2.7) нужен для tcpdump-14:4.99.5-1.red80.i686
+        libcrypto.so.3 нужен для tcpdump-14:4.99.5-1.red80.i686
+        libcrypto.so.3(OPENSSL_3.0.0) нужен для tcpdump-14:4.99.5-1.red80.i686
+        libpcap.so.1 нужен для tcpdump-14:4.99.5-1.red80.i686
+[vladblednov@mephi-2026 ~]$ rpm -q tcpdump
+пакет tcpdump не установлен
+[vladblednov@mephi-2026 ~]$ sudo rpm -ivh /tmp/tcpdump-4.99.5-1.red80.x86_64.rpm
+Verifying...                          ################################# [100%]
+Подготовка...               ################################# [100%]
+Обновление / установка...
+   1:tcpdump-14:4.99.5-1.red80        ################################# [100%]
+[vladblednov@mephi-2026 ~]$ sudo rm -f /tmp/tcpdump-4.99.5-1.red80.i686.rpm
+[vladblednov@mephi-2026 ~]$ ls -l /tmp/tcpdump*.rpm
+-rw-r--r--. 1 root root 535524 ноя  1 21:47 /tmp/tcpdump-4.99.5-1.red80.x86_64.rpm
+[vladblednov@mephi-2026 ~]$ rpm -q tcpdump
+tcpdump-4.99.5-1.red80.x86_64
+[vladblednov@mephi-2026 ~]$ which tcpdump
+/usr/sbin/tcpdump
+[vladblednov@mephi-2026 ~]$ tcpdump --version
+tcpdump version 4.99.5
+libpcap version 1.10.1 (with TPACKET_V3)
+OpenSSL 3.5.7 9 Jun 2026
+64-bit build, 64-bit time_t
+[vladblednov@mephi-2026 ~]$ sudo dnf history > ~/dnf.out
+[vladblednov@mephi-2026 ~]$ head -20 ~/dnf.out
+Иденти | Командная строка                                                                                                                             | Дата и время     | Действия       | Изменен
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+     9 | remove -y tcpdump                                                                                                                            | 2026-11-01 21:03 | Removed        |    1
+     8 | install -y nginx libcap-ng-utils                                                                                                             | 2026-11-01 21:03 | Install        |    5
+     7 | update -y                                                                                                                                    | 2026-11-01 20:51 | I, O, U        |  178 EE
+     6 | install fail2ban -y                                                                                                                          | 2026-09-14 02:25 | Install        |    4 EE
+     5 | upgrade -y                                                                                                                                   | 2026-09-14 02:00 | I, O, U        |  164 EE
+     4 | -y install netbird                                                                                                                           | 2026-09-14 01:36 | Install        |    1 E<
+     3 | autoremove -y --setopt=metadata_expire=-1                                                                                                    | 2026-09-14 01:09 | Removed        |    1 ><
+     2 | remove -y --setopt=metadata_expire=-1 virtualbox-guest-additions xorg-x11-drv-vbox VirtualBox-kmod open-vm-tools spice-vdagent               | 2026-09-14 01:08 | Removed        |    5 >E
+     1 |                                                                                                                                              | 2026-09-14 00:56 | Install        | 1764 EE
+[vladblednov@mephi-2026 ~]$ lsblk
+NAME   MAJ:MIN RM  SIZE RO TYPE MOUNTPOINTS
+sda      8:0    0   35G  0 disk
+├─sda1   8:1    0    1M  0 part
+├─sda2   8:2    0    1G  0 part /boot
+├─sda3   8:3    0  3,5G  0 part [SWAP]
+└─sda4   8:4    0 30,5G  0 part /
+sdb      8:16   0    5G  0 disk
+sr0     11:0    1    6G  1 rom
+zram0  252:0    0  7,8G  0 disk [SWAP]
+[vladblednov@mephi-2026 ~]$ sudo fdisk /dev/sdb
+
+Добро пожаловать в fdisk (util-linux 2.38.1).
+Изменения останутся только в памяти до тех пор, пока вы не решите записать их.
+Будьте внимательны, используя команду write.
+
+Устройство не содержит стандартной таблицы разделов.
+Создана новая метка DOS с идентификатором 0xe4f89880.
+
+Команда (m для справки): n
+Тип раздела
+   p   основной (0 primary, 0 extended, 4 free)
+   e   расширенный (контейнер для логических разделов)
+Выберите (по умолчанию - p):p
+Номер раздела (1-4, default 1): 1
+Первый сектор (2048-10485759, default 2048):
+Last sector, +/-sectors or +/-size{K,M,G,T,P} (2048-10485759, default 10485759):
+
+Создан новый раздел 1 с типом 'Linux' и размером 5 GiB.
+
+Команда (m для справки): w
+Таблица разделов была изменена.
+Вызывается ioctl() для перечитывания таблицы разделов.
+Синхронизируются диски.
+
+[vladblednov@mephi-2026 ~]$ lsblk /dev/sdb
+NAME   MAJ:MIN RM SIZE RO TYPE MOUNTPOINTS
+sdb      8:16   0   5G  0 disk
+└─sdb1   8:17   0   5G  0 part
+[vladblednov@mephi-2026 ~]$ sudo mkfs.ext4 -L MEPHI_WEB /dev/sdb1
+mke2fs 1.46.3 (27-Jul-2021)
+Discarding device blocks: done
+Creating filesystem with 1310464 4k blocks and 327680 inodes
+Filesystem UUID: 51251cab-6e8b-48af-be58-2fe9b1f5df35
+Superblock backups stored on blocks:
+        32768, 98304, 163840, 229376, 294912, 819200, 884736
+
+Allocating group tables: done
+Writing inode tables: done
+Creating journal (16384 blocks): done
+Writing superblocks and filesystem accounting information: done
+
+[vladblednov@mephi-2026 ~]$ lsblk -f /dev/sdb
+NAME   FSTYPE FSVER LABEL     UUID                                 FSAVAIL FSUSE% MOUNTPOINTS
+sdb
+└─sdb1 ext4   1.0   MEPHI_WEB 51251cab-6e8b-48af-be58-2fe9b1f5df35
+[vladblednov@mephi-2026 ~]$ sudo mkdir -p /mephi-web
+[vladblednov@mephi-2026 ~]$ echo 'LABEL=MEPHI_WEB  /mephi-web  ext4  defaults  0 2' | sudo tee -a /etc/fstab
+LABEL=MEPHI_WEB  /mephi-web  ext4  defaults  0 2
+[vladblednov@mephi-2026 ~]$ sudo mount -a
+mount: (hint) your fstab has been modified, but systemd still uses
+       the old version; use 'systemctl daemon-reload' to reload.
+[vladblednov@mephi-2026 ~]$ mount | grep mephi-web
+/dev/sdb1 on /mephi-web type ext4 (rw,relatime,seclabel)
+[vladblednov@mephi-2026 ~]$ df -h /mephi-web
+Файловая система Размер Использовано  Дост Использовано% Cмонтировано в
+/dev/sdb1          4,9G          24K  4,6G            1% /mephi-web
+[vladblednov@mephi-2026 ~]$ lsblk -f /dev/sdb
+NAME   FSTYPE FSVER LABEL     UUID                                 FSAVAIL FSUSE% MOUNTPOINTS
+sdb
+└─sdb1 ext4   1.0   MEPHI_WEB 51251cab-6e8b-48af-be58-2fe9b1f5df35    4,6G     0% /mephi-web
+[vladblednov@mephi-2026 ~]$ sudo systemctl daemon-reload
+[vladblednov@mephi-2026 ~]$ sudo umount /mephi-web
+[vladblednov@mephi-2026 ~]$ sudo mount -a
+[vladblednov@mephi-2026 ~]$ mount | grep mephi-web
+/dev/sdb1 on /mephi-web type ext4 (rw,relatime,seclabel)
+[vladblednov@mephi-2026 ~]$ sudo systemctl enable --now nginx
+Created symlink /etc/systemd/system/multi-user.target.wants/nginx.service → /usr/lib/systemd/system/nginx.service.
+[vladblednov@mephi-2026 ~]$ sudo systemctl status nginx --no-pager
+● nginx.service - The nginx HTTP and reverse proxy server
+     Loaded: loaded (/usr/lib/systemd/system/nginx.service; enabled; preset: disabled)
+    Drop-In: /usr/lib/systemd/system/service.d
+             └─10-timeout-abort.conf
+     Active: active (running) since Sun 2026-11-01 22:06:14 MSK; 12s ago
+    Process: 24748 ExecStartPre=/usr/bin/rm -f /run/nginx.pid (code=exited, status=0/SUCCESS)
+    Process: 24749 ExecStartPre=/usr/sbin/nginx -t (code=exited, status=0/SUCCESS)
+    Process: 24750 ExecStart=/usr/sbin/nginx (code=exited, status=0/SUCCESS)
+   Main PID: 24751 (nginx)
+      Tasks: 3 (limit: 9493)
+     Memory: 5.4M
+        CPU: 79ms
+     CGroup: /system.slice/nginx.service
+             ├─24751 "nginx: master process /usr/sbin/nginx"
+             ├─24752 "nginx: worker process"
+             └─24753 "nginx: worker process"
+
+ноя 01 22:06:14 mephi-2026.domain.local systemd[1]: Starting nginx.service - The nginx HTTP and reverse proxy server...
+ноя 01 22:06:14 mephi-2026.domain.local nginx[24749]: nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+ноя 01 22:06:14 mephi-2026.domain.local nginx[24749]: nginx: configuration file /etc/nginx/nginx.conf test is successful
+ноя 01 22:06:14 mephi-2026.domain.local systemd[1]: Started nginx.service - The nginx HTTP and reverse proxy server.
+[vladblednov@mephi-2026 ~]$ sudo ss -tlnp | grep :80
+LISTEN 0      511          0.0.0.0:80         0.0.0.0:*    users:(("nginx",pid=24753,fd=8),("nginx",pid=24752,fd=8),("nginx",pid=24751,fd=8))
+LISTEN 0      511             [::]:80            [::]:*    users:(("nginx",pid=24753,fd=9),("nginx",pid=24752,fd=9),("nginx",pid=24751,fd=9))
+[vladblednov@mephi-2026 ~]$ curl -s http://localhost/ | head -5
+<!DOCTYPE html>
+<html lang="ru">
+    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+[vladblednov@mephi-2026 ~]$ sudo journalctl -u nginx -b > ~/journalctl.out
+[vladblednov@mephi-2026 ~]$ wc -l ~/journalctl.out
+4 /home/vladblednov/journalctl.out
+[vladblednov@mephi-2026 ~]$ head -20 ~/journalctl.out
+ноя 01 22:06:14 mephi-2026.domain.local systemd[1]: Starting nginx.service - The nginx HTTP and reverse proxy server...
+ноя 01 22:06:14 mephi-2026.domain.local nginx[24749]: nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+ноя 01 22:06:14 mephi-2026.domain.local nginx[24749]: nginx: configuration file /etc/nginx/nginx.conf test is successful
+ноя 01 22:06:14 mephi-2026.domain.local systemd[1]: Started nginx.service - The nginx HTTP and reverse proxy server.
+[vladblednov@mephi-2026 ~]$ sudo groupadd developers
+[vladblednov@mephi-2026 ~]$ sudo groupadd -g 4444 curators
+[vladblednov@mephi-2026 ~]$ sudo useradd -u 5501 -m -s /bin/bash user1
+[vladblednov@mephi-2026 ~]$ sudo useradd -u 5502 -m -s /bin/bash user2
+[vladblednov@mephi-2026 ~]$ sudo useradd -u 5503 -m -s /bin/bash user3
+[vladblednov@mephi-2026 ~]$ sudo useradd -m -s /bin/bash curator1
+[vladblednov@mephi-2026 ~]$ sudo useradd -m -s /bin/bash curator2
+[vladblednov@mephi-2026 ~]$ sudo usermod -aG developers user1
+[vladblednov@mephi-2026 ~]$ sudo usermod -aG developers user2
+[vladblednov@mephi-2026 ~]$ sudo usermod -aG developers user3
+[vladblednov@mephi-2026 ~]$ sudo usermod -aG curators curator1
+[vladblednov@mephi-2026 ~]$ sudo usermod -aG curators curator2
+[vladblednov@mephi-2026 ~]$ id user1
+uid=5501(user1) gid=5501(user1) группы=5501(user1),1002(developers)
+[vladblednov@mephi-2026 ~]$ id user2
+uid=5502(user2) gid=5502(user2) группы=5502(user2),1002(developers)
+[vladblednov@mephi-2026 ~]$ id user3
+uid=5503(user3) gid=5503(user3) группы=5503(user3),1002(developers)
+[vladblednov@mephi-2026 ~]$ id curator1
+uid=5504(curator1) gid=5504(curator1) группы=5504(curator1),4444(curators)
+[vladblednov@mephi-2026 ~]$ id curator2
+uid=5505(curator2) gid=5505(curator2) группы=5505(curator2),4444(curators)
+[vladblednov@mephi-2026 ~]$ getent group developers curators
+developers:x:1002:user1,user2,user3
+curators:x:4444:curator1,curator2
+[vladblednov@mephi-2026 ~]$ sudo mkdir -p /data/mephi-2026
+[vladblednov@mephi-2026 ~]$ sudo chown root:developers /data/mephi-2026
+[vladblednov@mephi-2026 ~]$ sudo chmod 2770 /data/mephi-2026
+[vladblednov@mephi-2026 ~]$ ls -ald /data/mephi-2026
+drwxrws---. 2 root developers 4096 ноя  1 22:15 /data/mephi-2026
+[vladblednov@mephi-2026 ~]$ ls -ld /data/mephi-2026
+drwxrws---. 2 root developers 4096 ноя  1 22:15 /data/mephi-2026
+[vladblednov@mephi-2026 ~]$ sudo setfacl -d -m u::rwx,g::rwx,o::--- /data/mephi-2026
+[vladblednov@mephi-2026 ~]$ sudo setfacl -d -m g:developers:rwx /data/mephi-2026
+[vladblednov@mephi-2026 ~]$ sudo setfacl -d -m g:curators:r-x /data/mephi-2026
+[vladblednov@mephi-2026 ~]$ getfacl /data/mephi-2026
+getfacl: Removing leading '/' from absolute path names
+# file: data/mephi-2026
+# owner: root
+# group: developers
+# flags: -s-
+user::rwx
+group::rwx
+other::---
+default:user::rwx
+default:group::rwx
+default:group:developers:rwx
+default:group:curators:r-x
+default:mask::rwx
+default:other::---
+
+[vladblednov@mephi-2026 ~]$ sudo -u user1 touch /data/mephi-2026/test_from_user1.txt
+[vladblednov@mephi-2026 ~]$ ls -l /data/mephi-2026/
+ls: невозможно открыть каталог '/data/mephi-2026/': Отказано в доступе
+[vladblednov@mephi-2026 ~]$ getfacl /data/mephi-2026/test_from_user1.txt
+getfacl: /data/mephi-2026/test_from_user1.txt: Отказано в доступе
+[vladblednov@mephi-2026 ~]$ sudo -u curator1 cat /data/mephi-2026/test_from_user1.txt
+cat: /data/mephi-2026/test_from_user1.txt: Отказано в доступе
+[vladblednov@mephi-2026 ~]$ sudo -u curator1 touch /data/mephi-2026/test_from_user1.txt
+touch: невозможно выполнить touch для '/data/mephi-2026/test_from_user1.txt': Отказано в доступе
+[vladblednov@mephi-2026 ~]$ sudo setfacl -m g:curators:r-x /data/mephi-2026
+[vladblednov@mephi-2026 ~]$ getfacl /data/mephi-2026
+getfacl: Removing leading '/' from absolute path names
+# file: data/mephi-2026
+# owner: root
+# group: developers
+# flags: -s-
+user::rwx
+group::rwx
+group:curators:r-x
+mask::rwx
+other::---
+default:user::rwx
+default:group::rwx
+default:group:developers:rwx
+default:group:curators:r-x
+default:mask::rwx
+default:other::---
+
+[vladblednov@mephi-2026 ~]$ sudo -u user1 ls -l /data/mephi-2026/
+итого 4
+-rw-rw----+ 1 user1 developers 0 ноя  1 22:20 test_from_user1.txt
+[vladblednov@mephi-2026 ~]$ sudo -u curator1 ls -l /data/mephi-2026/
+итого 4
+-rw-rw----+ 1 user1 developers 0 ноя  1 22:20 test_from_user1.txt
+[vladblednov@mephi-2026 ~]$ sudo -u curator1 cat /data/mephi-2026/test_from_user1.txt
+[vladblednov@mephi-2026 ~]$ sudo -u curator1 touch /data/mephi-2026/test_from_user1.txt
+touch: невозможно выполнить touch для '/data/mephi-2026/test_from_user1.txt': Отказано в доступе
+[vladblednov@mephi-2026 ~]$ sudo -u user2 touch /data/mephi-2026/test_from_user2.txt
+[vladblednov@mephi-2026 ~]$ sudo -u user2 cat /data/mephi-2026/test_from_user1.txt
+[vladblednov@mephi-2026 ~]$ sudo getfacl /data/mephi-2026/test_from_user1.txt
+getfacl: Removing leading '/' from absolute path names
+# file: data/mephi-2026/test_from_user1.txt
+# owner: user1
+# group: developers
+user::rw-
+group::rwx                      #effective:rw-
+group:developers:rwx            #effective:rw-
+group:curators:r-x              #effective:r--
+mask::rw-
+other::---
+
+[vladblednov@mephi-2026 ~]$ stat /data/mephi-2026 > ~/stat.out
+[vladblednov@mephi-2026 ~]$ ls -l /usr/sbin/tcpdump
+-rwxr-xr-x. 1 root root 1299064 июл 30  2025 /usr/sbin/tcpdump
+[vladblednov@mephi-2026 ~]$ getcap /usr/sbin/tcpdump
+[vladblednov@mephi-2026 ~]$ sudo -u user1 tcpdump -c 1 -i any -nn
+tcpdump: any: You don't have permission to capture on that device
+(socket: Operation not permitted)
+[vladblednov@mephi-2026 ~]$ sudo setcap cap_net_raw,cap_net_admin+eip /usr/sbin/tcpdump
+[vladblednov@mephi-2026 ~]$ getcap /usr/sbin/tcpdump
+/usr/sbin/tcpdump cap_net_admin,cap_net_raw=eip
+[vladblednov@mephi-2026 ~]$ ls -l /usr/sbin/tcpdump
+-rwxr-xr-x. 1 root root 1299064 июл 30  2025 /usr/sbin/tcpdump
+[vladblednov@mephi-2026 ~]$ sudo -u user1 timeout 5 tcpdump -c 1 -i any -nn
+tcpdump: verbose output suppressed, use -v[v]... for full protocol decode
+listening on any, link-type LINUX_SLL2 (Linux cooked v2), snapshot length 262144 bytes
+22:27:44.145545 wt0   Out IP 172.16.0.36.58822 > 172.16.0.111.44909: Flags [P.], seq 348774253:348774445, ack 431097150, win 1748, length 192
+1 packet captured
+14 packets received by filter
+0 packets dropped by kernel
+[vladblednov@mephi-2026 ~]$ getcap /usr/sbin/tcpdump > ~/getcap.out
+[vladblednov@mephi-2026 ~]$ cat ~/getcap.out
+/usr/sbin/tcpdump cap_net_admin,cap_net_raw=eip
+[vladblednov@mephi-2026 ~]$ getenforce > ~/getenforce.out
+[vladblednov@mephi-2026 ~]$ cat ~/getenforce.out
+Enforcing
+[vladblednov@mephi-2026 ~]$ grep -n "root" /etc/nginx/nginx.conf
+41:        root         /usr/share/nginx/html;
+54:#        root         /usr/share/nginx/html;
+[vladblednov@mephi-2026 ~]$ sudo sed -i 's|^[[:space:]]*root[[:space:]]*/usr/share/nginx/html;|        root /mephi-web;|' /etc/nginx/nginx.conf
+[vladblednov@mephi-2026 ~]$ grep -n "root" /etc/nginx/nginx.conf
+41:        root /mephi-web;
+54:#        root         /usr/share/nginx/html;
+[vladblednov@mephi-2026 ~]$ sudo semanage fcontext -a -t httpd_sys_content_t "/mephi-web(/.*)?"
+[vladblednov@mephi-2026 ~]$ sudo restorecon -Rv /mephi-web
+Relabeled /mephi-web from system_u:object_r:unlabeled_t:s0 to system_u:object_r:httpd_sys_content_t:s0
+Relabeled /mephi-web/lost+found from system_u:object_r:unlabeled_t:s0 to system_u:object_r:httpd_sys_content_t:s0
+[vladblednov@mephi-2026 ~]$ ls -Zd /mephi-web
+system_u:object_r:httpd_sys_content_t:s0 /mephi-web
+[vladblednov@mephi-2026 ~]$ sudo systemctl restart nginx
+[vladblednov@mephi-2026 ~]$ sudo systemctl status nginx --no-pager
+● nginx.service - The nginx HTTP and reverse proxy server
+     Loaded: loaded (/usr/lib/systemd/system/nginx.service; enabled; preset: disabled)
+    Drop-In: /usr/lib/systemd/system/service.d
+             └─10-timeout-abort.conf
+     Active: active (running) since Sun 2026-11-01 22:35:23 MSK; 5s ago
+    Process: 37014 ExecStartPre=/usr/bin/rm -f /run/nginx.pid (code=exited, status=0/SUCCESS)
+    Process: 37015 ExecStartPre=/usr/sbin/nginx -t (code=exited, status=0/SUCCESS)
+    Process: 37034 ExecStart=/usr/sbin/nginx (code=exited, status=0/SUCCESS)
+   Main PID: 37041 (nginx)
+      Tasks: 3 (limit: 9493)
+     Memory: 3.6M
+        CPU: 95ms
+     CGroup: /system.slice/nginx.service
+             ├─37041 "nginx: master process /usr/sbin/nginx"
+             ├─37042 "nginx: worker process"
+             └─37043 "nginx: worker process"
+
+ноя 01 22:35:23 mephi-2026.domain.local systemd[1]: Starting nginx.service - The nginx HTTP and reverse proxy server...
+ноя 01 22:35:23 mephi-2026.domain.local nginx[37015]: nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+ноя 01 22:35:23 mephi-2026.domain.local nginx[37015]: nginx: configuration file /etc/nginx/nginx.conf test is successful
+ноя 01 22:35:23 mephi-2026.domain.local systemd[1]: Started nginx.service - The nginx HTTP and reverse proxy server.
+[vladblednov@mephi-2026 ~]$ curl -I http://localhost/
+HTTP/1.1 403 Forbidden
+Server: nginx/1.30.4
+Date: Sun, 01 Nov 2026 19:35:37 GMT
+Content-Type: text/html
+Content-Length: 153
+Connection: keep-alive
+
+[vladblednov@mephi-2026 ~]$ sudo ausearch -m AVC -ts recent 2>/dev/null | tail -10
+[vladblednov@mephi-2026 ~]$ ls /usr/lib64/security/pam_access.so 2>/dev/null || ls /lib64/security/pam_access.so 2>/dev/null
+rpm -q pam | head -1
+/usr/lib64/security/pam_access.so
+pam-1.5.3-7.red80.x86_64
+[vladblednov@mephi-2026 ~]$ grep -n pam_access /etc/pam.d/login
+[vladblednov@mephi-2026 ~]$ grep -n "" /etc/pam.d/login
+1:#%PAM-1.0
+2:auth       substack     system-auth
+3:auth       include      postlogin
+4:account    required     pam_nologin.so
+5:account    include      system-auth
+6:password   include      system-auth
+7:# pam_selinux.so close should be the first session rule
+8:session    required     pam_selinux.so close
+9:session    required     pam_loginuid.so
+10:# pam_selinux.so open should only be followed by sessions to be executed in the user context
+11:session    required     pam_selinux.so open
+12:session    required     pam_namespace.so
+13:session    optional     pam_keyinit.so force revoke
+14:session    include      system-auth
+15:session    include      postlogin
+16:-session   optional     pam_ck_connector.so
+[vladblednov@mephi-2026 ~]$ sudo sed -i '/^account[[:space:]]\+include[[:space:]]\+system-auth/i account    required     pam_access.so' /etc/pam.d/login
+[vladblednov@mephi-2026 ~]$ grep -n "account" /etc/pam.d/login
+4:account    required     pam_nologin.so
+5:account    required     pam_access.so
+6:account    include      system-auth
+[vladblednov@mephi-2026 ~]$ printf '%s\n' '-:curators:LOCAL' '+:ALL:ALL' | sudo tee -a /etc/security/access.conf
+-:curators:LOCAL
++:ALL:ALL
+[vladblednov@mephi-2026 ~]$ tail -5 /etc/security/access.conf
+#
+# All other users should be denied to get access from all sources.
+#-:ALL:ALL
+-:curators:LOCAL
++:ALL:ALL
+[vladblednov@mephi-2026 ~]$ grep pam_access /etc/pam.d/login
+account    required     pam_access.so
+[vladblednov@mephi-2026 ~]$ grep -E '^-:curators:LOCAL|^\+:ALL:ALL' /etc/security/access.conf
+-:curators:LOCAL
++:ALL:ALL
+[vladblednov@mephi-2026 ~]$ sudo sed -i 's/^PASS_MAX_DAYS.*/PASS_MAX_DAYS\t90/' /etc/login.defs
+[vladblednov@mephi-2026 ~]$ grep "^PASS_MAX_DAYS" /etc/login.defs
+PASS_MAX_DAYS   90
+[vladblednov@mephi-2026 ~]$ sudo sed -i 's/^\s*#\s*minlen\s*=.*/minlen = 12/' /etc/security/pwquality.conf
+[vladblednov@mephi-2026 ~]$ grep -n '^minlen' /etc/security/pwquality.conf
+11:minlen = 12
+[vladblednov@mephi-2026 ~]$ sudo chage -M 90 user1
+[vladblednov@mephi-2026 ~]$ sudo chage -M 90 user2
+[vladblednov@mephi-2026 ~]$ sudo chage -M 90 user3
+[vladblednov@mephi-2026 ~]$ sudo chage -M 90 curator1
+[vladblednov@mephi-2026 ~]$ sudo chage -M 90 curator2
+[vladblednov@mephi-2026 ~]$ sudo chage -l user1 | grep -i максимальное
+Максимальное количество дней между сменой пароля                : 90
+[vladblednov@mephi-2026 ~]$ sudo chage -l curator1 | grep -i максимальное
+Максимальное количество дней между сменой пароля                : 90
+[vladblednov@mephi-2026 ~]$ sudo bash -c 'echo "Hello from Student: 372770" > /mephi-web/index.html'
+[vladblednov@mephi-2026 ~]$ cat /mephi-web/index.html
+Hello from Student: 372770
+[vladblednov@mephi-2026 ~]$ ls -lZ /mephi-web/index.html
+-rw-r--r--. 1 root root unconfined_u:object_r:httpd_sys_content_t:s0 27 ноя  1 22:46 /mephi-web/index.html
+[vladblednov@mephi-2026 ~]$ sudo restorecon -Rv /mephi-web
+[vladblednov@mephi-2026 ~]$ ls -lZ /mephi-web/index.html
+-rw-r--r--. 1 root root unconfined_u:object_r:httpd_sys_content_t:s0 27 ноя  1 22:46 /mephi-web/index.html
+[vladblednov@mephi-2026 ~]$ curl http://localhost/
+Hello from Student: 372770
+[vladblednov@mephi-2026 ~]$ curl http://localhost/ > ~/curl.out
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+100     27 100     27   0      0  16938      0                              0
+[vladblednov@mephi-2026 ~]$ cat ~/curl.out
+Hello from Student: 372770
+[vladblednov@mephi-2026 ~]$ stat /mephi-web >> ~/stat.out
+[vladblednov@mephi-2026 ~]$ cat ~/stat.out
+  Файл: /data/mephi-2026
+  Размер: 4096          Блоков: 16         Блок В/В: 4096   каталог
+Устройство: 8/4 Инода: 262147      Ссылки: 2
+Доступ: (2770/drwxrws---)  Uid: (    0/    root)   Gid: ( 1002/developers)
+Контекст: unconfined_u:object_r:default_t:s0
+Доступ:        2026-11-01 22:23:50.360015166 +0300
+Модифицирован: 2026-11-01 22:24:24.780871209 +0300
+Изменён:       2026-11-01 22:24:24.780871209 +0300
+Создан:        2026-11-01 22:15:36.469083770 +0300
+  Файл: /mephi-web
+  Размер: 4096          Блоков: 8          Блок В/В: 4096   каталог
+Устройство: 8/17        Инода: 2           Ссылки: 3
+Доступ: (0755/drwxr-xr-x)  Uid: (    0/    root)   Gid: (    0/    root)
+Контекст: system_u:object_r:httpd_sys_content_t:s0
+Доступ:        2026-11-01 22:47:24.487411888 +0300
+Модифицирован: 2026-11-01 22:46:54.186527323 +0300
+Изменён:       2026-11-01 22:46:54.186527323 +0300
+Создан:        2026-11-01 21:59:00.000000000 +0300
+[vladblednov@mephi-2026 ~]$ sudo journalctl -u nginx -b > ~/journalctl.out
+[vladblednov@mephi-2026 ~]$ wc -l ~/journalctl.out
+11 /home/vladblednov/journalctl.out
+[vladblednov@mephi-2026 ~]$ sudo cp /etc/fstab ~/fstab
+[vladblednov@mephi-2026 ~]$ sudo cp /etc/passwd ~/passwd
+[vladblednov@mephi-2026 ~]$ sudo cp /etc/shadow ~/shadow
+[vladblednov@mephi-2026 ~]$ sudo cp /etc/group ~/group
+[vladblednov@mephi-2026 ~]$ sudo cp /etc/security/pwquality.conf ~/pwquality.conf
+[vladblednov@mephi-2026 ~]$ sudo chown $USER:$USER ~/fstab ~/passwd ~/shadow ~/group ~/pwquality.conf
+[vladblednov@mephi-2026 ~]$ ls -l
+итого 60
+-rw-r--r--. 1 vladblednov vladblednov   27 ноя  1 22:48 curl.out
+-rw-r--r--. 1 vladblednov vladblednov 2202 ноя  1 21:51 dnf.out
+-rw-r--r--. 1 vladblednov vladblednov  664 ноя  1 22:52 fstab
+-rw-r--r--. 1 vladblednov vladblednov   48 ноя  1 22:27 getcap.out
+-rw-r--r--. 1 vladblednov vladblednov   10 ноя  1 22:30 getenforce.out
+-rw-r--r--. 1 vladblednov vladblednov 1091 ноя  1 22:53 group
+-rw-r--r--. 1 vladblednov vladblednov 1446 ноя  1 09:35 history.out
+-rw-r--r--. 1 vladblednov vladblednov 1317 ноя  1 22:49 journalctl.out
+-rw-r--r--. 1 vladblednov vladblednov 2584 ноя  1 22:52 passwd
+-rw-r--r--. 1 vladblednov vladblednov  414 ноя  1 21:37 ping.out
+-rw-r--r--. 1 vladblednov vladblednov   27 ноя  1 08:45 privileged_processes.out
+-rw-r--r--. 1 vladblednov vladblednov 2673 ноя  1 22:53 pwquality.conf
+-rw-r--r--. 1 vladblednov vladblednov  706 ноя  1 08:40 setuid_files.out
+----------. 1 vladblednov vladblednov 1391 ноя  1 22:53 shadow
+-rw-r--r--. 1 vladblednov vladblednov 1109 ноя  1 22:49 stat.out
+[vladblednov@mephi-2026 ~]$ ls -al
+итого 92
+drwx------. 5 vladblednov vladblednov 4096 ноя  1 22:53 .
+drwxr-xr-x. 9 root        root        4096 ноя  1 22:12 ..
+-rw-------. 1 vladblednov vladblednov    0 ноя  1 21:30 .bash_history
+-rw-r--r--. 1 vladblednov vladblednov   18 июл 19  2023 .bash_logout
+-rw-r--r--. 1 vladblednov vladblednov  144 июл 19  2023 .bash_profile
+-rw-r--r--. 1 vladblednov vladblednov  522 июл 19  2023 .bashrc
+drwx------. 4 vladblednov vladblednov 4096 ноя  1 04:02 .config
+-rw-r--r--. 1 vladblednov vladblednov   27 ноя  1 22:48 curl.out
+-rw-r--r--. 1 vladblednov vladblednov 2202 ноя  1 21:51 dnf.out
+-rw-r--r--. 1 vladblednov vladblednov  664 ноя  1 22:52 fstab
+-rw-r--r--. 1 vladblednov vladblednov   48 ноя  1 22:27 getcap.out
+-rw-r--r--. 1 vladblednov vladblednov   10 ноя  1 22:30 getenforce.out
+-rw-r--r--. 1 vladblednov vladblednov 1091 ноя  1 22:53 group
+-rw-r--r--. 1 vladblednov vladblednov 1446 ноя  1 09:35 history.out
+-rw-r--r--. 1 vladblednov vladblednov 1317 ноя  1 22:49 journalctl.out
+drwx------. 4 vladblednov vladblednov 4096 сен 14 02:40 .local
+-rw-r--r--. 1 vladblednov vladblednov 2584 ноя  1 22:52 passwd
+-rw-r--r--. 1 vladblednov vladblednov  414 ноя  1 21:37 ping.out
+-rw-r--r--. 1 vladblednov vladblednov   27 ноя  1 08:45 privileged_processes.out
+-rw-r--r--. 1 vladblednov vladblednov 2673 ноя  1 22:53 pwquality.conf
+-rw-r--r--. 1 vladblednov vladblednov  706 ноя  1 08:40 setuid_files.out
+----------. 1 vladblednov vladblednov 1391 ноя  1 22:53 shadow
+drwx------. 2 vladblednov vladblednov 4096 окт 10 22:05 .ssh
+-rw-r--r--. 1 vladblednov vladblednov 1109 ноя  1 22:49 stat.out
+[vladblednov@mephi-2026 ~]$ chmod 600 ~/shadow
+[vladblednov@mephi-2026 ~]$ ls -l ~/shadow
+-rw-------. 1 vladblednov vladblednov 1391 ноя  1 22:53 /home/vladblednov/shadow
+[vladblednov@mephi-2026 ~]$ rm -f ~/setuid_files.out ~/privileged_processes.out
+[vladblednov@mephi-2026 ~]$ history > ~/history.out
+[vladblednov@mephi-2026 ~]$ wc -l ~/history.out
+152 /home/vladblednov/history.out
+[vladblednov@mephi-2026 ~]$ head -5 ~/history.out
+    1  nmcli -t -f NAME,DEVICE,TYPE,STATE connection show --active
+    2  nmcli -f ipv4.method connection show "ens18"
+    3  ip -4 addr show ens18
+    4  hostnamectl | grep "Static hostname"
+    5  echo "я ранее применил sudo hostnamectl set-hostname mephi-2026.domain.local"
+[vladblednov@mephi-2026 ~]$ tail -5 ~/history.out
+  148  ls -al
+  149  chmod 600 ~/shadow
+  150  ls -l ~/shadow
+  151  rm -f ~/setuid_files.out ~/privileged_processes.out
+  152  history > ~/history.out
+[vladblednov@mephi-2026 ~]$ ls -l
+итого 56
+-rw-r--r--. 1 vladblednov vladblednov   27 ноя  1 22:48 curl.out
+-rw-r--r--. 1 vladblednov vladblednov 2202 ноя  1 21:51 dnf.out
+-rw-r--r--. 1 vladblednov vladblednov  664 ноя  1 22:52 fstab
+-rw-r--r--. 1 vladblednov vladblednov   48 ноя  1 22:27 getcap.out
+-rw-r--r--. 1 vladblednov vladblednov   10 ноя  1 22:30 getenforce.out
+-rw-r--r--. 1 vladblednov vladblednov 1091 ноя  1 22:53 group
+-rw-r--r--. 1 vladblednov vladblednov 6510 ноя  1 23:01 history.out
+-rw-r--r--. 1 vladblednov vladblednov 1317 ноя  1 22:49 journalctl.out
+-rw-r--r--. 1 vladblednov vladblednov 2584 ноя  1 22:52 passwd
+-rw-r--r--. 1 vladblednov vladblednov  414 ноя  1 21:37 ping.out
+-rw-r--r--. 1 vladblednov vladblednov 2673 ноя  1 22:53 pwquality.conf
+-rw-------. 1 vladblednov vladblednov 1391 ноя  1 22:53 shadow
+-rw-r--r--. 1 vladblednov vladblednov 1109 ноя  1 22:49 stat.out
+[vladblednov@mephi-2026 ~]$ curl http://localhost/
+Hello from Student: 372770
+[vladblednov@mephi-2026 ~]$
