@@ -327,7 +327,7 @@ curl http://localhost/ > ~/curl.out
 
 ### Раздел 8. Публикация
 
-Все 14 артефактов собраны в репозитории. Скриншот `mephi-screenshot.png` содержит вывод `curl http://localhost/` с текстом `Hello from Student: 372770`.
+Все 15 артефактов собраны в репозитории. Скриншот `mephi-screenshot.png` содержит вывод `curl http://localhost/` с текстом `Hello from Student: 372770`.
 
 ---
 
